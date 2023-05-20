@@ -13,6 +13,7 @@ class Linear_Programming_Preprocessing:
         self.coef_obj = []
         self.left_cons = None
         self.right_cons = None
+        self.variables = []
 
     def __get_num_variables_cond(self, file_path):
         with open(file_path, "r") as f:
@@ -111,6 +112,7 @@ class Linear_Programming_Preprocessing:
         self.num_variables, self.num_constraints = self.get_num_variables_constraints(self.input_file_path)
         self.objective_function()
         self.constraints()
+        variables = ["x{}".format(i + 1) for i in range(self.num_variables)]
         num_variables_cond = self.__get_num_variables_cond(self.var_cond_file_path)
         with open(self.var_cond_file_path, "r") as f:
             var_cond_components = f.readlines()
@@ -119,13 +121,17 @@ class Linear_Programming_Preprocessing:
             existing_variables = self.__get_existing_variables(var_cond_components)
             missing_variables_index = self.__get_missing_variables_index(existing_variables)
             add_left_cons = np.zeros((self.num_constraints, len(missing_variables_index)), dtype = int)
+            add_variables = []
+            for i in range(len(missing_variables_index)):
+                add_variables.append("x{}-".format(missing_variables_index[i] + 1))
+                variables[missing_variables_index[i]] = "x{}+".format(missing_variables_index[i] + 1)
             for i in range(self.num_constraints):
                 row_component_left_cons = self.left_cons[i]
                 add_left_cons[i] = row_component_left_cons[missing_variables_index] * -1
             self.left_cons = np.hstack((self.left_cons, add_left_cons))
             self.coef_obj = np.hstack((self.coef_obj, self.coef_obj[missing_variables_index] * -1))
             self.num_variables = len(self.coef_obj)
-        
+            self.variables = variables + add_variables
         ltq_var_conds_index = []
         for idx in range(len(var_cond_components)):
             var_cond_component = var_cond_components[idx]
@@ -143,3 +149,9 @@ class Linear_Programming_Preprocessing:
     
     def coef_constraints(self):
         return self.left_cons, self.right_cons
+    
+    def get_variables(self):
+        return self.variables
+    
+    def get_objective_function_sign(self):
+        return self.objective_sign
