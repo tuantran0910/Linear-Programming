@@ -1,1 +1,1 @@
-max 4x1 5x2
+max 3x1 2x2

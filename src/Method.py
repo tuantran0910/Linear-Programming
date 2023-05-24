@@ -19,10 +19,10 @@ def dantzig_method(c, A, b, variables, objective_sign):
     
     while True:
         # Tim kiem bien vao
-        negative_basis = [[variables[i - 1], i] for i in range(1, n + 1) if tableau[0, i] < 0]
-        if len(negative_basis) == 0:
+        negative_non_basis = [[variables[i - 1], i] for i in range(1, n + 1) if tableau[0, i] < 0]
+        if len(negative_non_basis) == 0:
             break
-        col_idx = sorted(negative_basis, key = lambda j: j[0])[0][1]
+        col_idx = sorted(negative_non_basis, key = lambda j: j[0])[0][1]
         var_in = non_basis[col_idx - 1]
         # Check dieu kien dung
         if all(x >= 0 for x in tableau[:, col_idx]):
@@ -127,14 +127,15 @@ def bland_method(c, A, b, variables, objective_sign):
     
     while True:
         # Tim kiem bien vao
-        negative_basis = [[variables[i - 1], i] for i in range(1, n + 1) if tableau[0, i] < 0]
-        if len(negative_basis) == 0:
-            break
-        col_idx = sorted(negative_basis, key = lambda j: j[0])[0][1]
-        var_in = non_basis[col_idx - 1]
+        print(tableau)
+        negative_non_basis = [[variables[i - 1], i] for i in range(1, n + 1) if tableau[0, i] < 0]
         # Check dieu kien dung
-        if all(x >= 0 for x in tableau[:, col_idx]):
+        if len(negative_non_basis) == 0:
             break
+        col_idx = sorted(negative_non_basis, key = lambda j: j[0])[0][1]
+        var_in = non_basis[col_idx - 1]
+        # if all(x >= 0 for x in tableau[:, col_idx]):
+        #     break
         
         # Tim kiem bien ra
         row_idx = -1
@@ -152,7 +153,6 @@ def bland_method(c, A, b, variables, objective_sign):
         if row_idx == -1:
             raise Exception("Bài toán vô nghiệm.")
         var_out = basis[row_idx - 1]
-        
         # Cập nhật bảng Simplex
         pivot = tableau[row_idx, col_idx]
         add_right = np.zeros(m + 1)
@@ -191,12 +191,12 @@ def bland_method(c, A, b, variables, objective_sign):
     
     result_tableau = tableau
     result_tableau[:, [variable_appeard_final_non_basics[0] for variable_appeard_final_non_basics in variables_appeard_final_non_basics]] = 0
-    
+
     final_solution = dict()        
     if len(variables_appeard_final_non_basics) == len(variables):
         for variable in variables_appeard_final_non_basics:
-            if variable[0] in variables:
-                final_solution[variable[0]] = 0
+            if variable[1] in variables:
+                final_solution[variable[1]] = 0
         for i in range(1, m + 1):
             if basis[i - 1] in variables:
                 final_solution[basis[i - 1]] = result_tableau[i, 0]

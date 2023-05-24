@@ -101,6 +101,7 @@ class Linear_Programming_Preprocessing:
                 self.left_cons[i] = row_left_cons
                 if sign == ">=":
                     self.left_cons[i] = -1 * self.left_cons[i]
+                    self.right_cons[i] = -1 * self.right_cons[i]
                 elif sign == "=":
                     self.left_cons = np.vstack((self.left_cons, -1 * self.left_cons[i]))
                     self.right_cons.append(-int(component_string[-1]))
