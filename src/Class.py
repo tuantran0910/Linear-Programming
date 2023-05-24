@@ -132,6 +132,9 @@ class Linear_Programming_Preprocessing:
             self.coef_obj = np.hstack((self.coef_obj, self.coef_obj[missing_variables_index] * -1))
             self.num_variables = len(self.coef_obj)
             self.variables = variables + add_variables
+        elif num_variables_cond == self.num_variables:
+            self.variables = variables
+         
         ltq_var_conds_index = []
         for idx in range(len(var_cond_components)):
             var_cond_component = var_cond_components[idx]
