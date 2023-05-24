@@ -16,7 +16,7 @@ if __name__ == "__main__":
     variables = test.get_variables()
     sign = test.get_objective_function_sign()
     
-    opt_value, opt_solution = mt.bland_method(c, A, b, variables, sign)
+    opt_value, opt_solution = mt.dantzig_method(c, A, b, variables, sign)
     print(opt_value)
     print(opt_solution)
 

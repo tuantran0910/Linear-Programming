@@ -47,8 +47,8 @@ class Linear_Programming_Preprocessing:
         with open(self.obj_func_file_path, "r") as f:
             objective_string = f.read()
             object_components = objective_string.split()
-            self.objective = object_components[0]
-            object_components.remove(self.objective)
+            self.objective_sign = object_components[0]
+            object_components.remove(self.objective_sign)
 
             exist_variables = self.__get_existing_variables(object_components)
             missing_variables_index = self.__get_missing_variables_index(exist_variables)
@@ -68,7 +68,7 @@ class Linear_Programming_Preprocessing:
                     self.coef_obj.insert(i, 0)
 
             self.coef_obj = np.asarray(self.coef_obj)
-            if self.objective == "max":
+            if self.objective_sign == "max":
                 self.coef_obj = -1 * self.coef_obj
             f.close()
 

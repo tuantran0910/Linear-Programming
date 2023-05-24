@@ -19,15 +19,11 @@ def dantzig_method(c, A, b, variables, objective_sign):
     
     while True:
         # Tim kiem bien vao
-        negative_non_basis = [[variables[i - 1], i] for i in range(1, n + 1) if tableau[0, i] < 0]
-        if len(negative_non_basis) == 0:
-            break
-        col_idx = sorted(negative_non_basis, key = lambda j: j[0])[0][1]
-        var_in = non_basis[col_idx - 1]
+        col_idx = np.argmin(tableau[0, 1:]) + 1
         # Check dieu kien dung
-        if all(x >= 0 for x in tableau[:, col_idx]):
+        if tableau[0, col_idx] >= 0:
             break
-        
+        var_in = non_basis[col_idx - 1]
         # Tim kiem bien ra
         row_idx = -1
         min_ratio = float('inf')
@@ -70,7 +66,7 @@ def dantzig_method(c, A, b, variables, objective_sign):
         basis[row_idx - 1] = var_in
         
     # Find optimal value and optimal variables
-    opt_value = tableau[0, 0]
+    opt_value = np.round(tableau[0, 0], 2)
     if objective_sign == "max":
         opt_value *= -1
     
@@ -87,11 +83,11 @@ def dantzig_method(c, A, b, variables, objective_sign):
     final_solution = dict()        
     if len(variables_appeard_final_non_basics) == len(variables):
         for variable in variables_appeard_final_non_basics:
-            if variable[0] in variables:
-                final_solution[variable[0]] = 0
+            if variable[1] in variables:
+                final_solution[variable[1]] = 0
         for i in range(1, m + 1):
             if basis[i - 1] in variables:
-                final_solution[basis[i - 1]] = result_tableau[i, 0]
+                final_solution[basis[i - 1]] = np.round(result_tableau[i, 0], 2)
     else:
         for variable in variables_appeard_final_non_basics:
             if variable[1] in variables:
@@ -100,10 +96,10 @@ def dantzig_method(c, A, b, variables, objective_sign):
             if basis[i - 1] in variables:
                 for l in range(n + 1):
                     if l == 0:
-                        final_solution[basis[i - 1]] = str(result_tableau[i, l])
+                        final_solution[basis[i - 1]] = str(np.round(result_tableau[i, l], 2))
                     else:
                         if result_tableau[i, l] != 0:
-                            final_solution[basis[i - 1]] += " {}{}".format(result_tableau[i, l], non_basis[l - 1])
+                            final_solution[basis[i - 1]] += " {}{}".format(np.round(result_tableau[i, l], 2), non_basis[l - 1])
     opt_solution = final_solution
     return opt_value, opt_solution
 
@@ -134,8 +130,6 @@ def bland_method(c, A, b, variables, objective_sign):
             break
         col_idx = sorted(negative_non_basis, key = lambda j: j[0])[0][1]
         var_in = non_basis[col_idx - 1]
-        # if all(x >= 0 for x in tableau[:, col_idx]):
-        #     break
         
         # Tim kiem bien ra
         row_idx = -1
