@@ -1,37 +1,67 @@
 from Class import *
 import numpy as np
 import Method as mt
+import streamlit as st
 
 if __name__ == "__main__":
-    test = Linear_Programming_Preprocessing(
+    st.title("Chương trình QHTT của :red[Tuấn và Thiên] :sunglasses:")
+    soBien = st.text_input('Mời bạn nhập số biến:')
+    soRangBuoc = st.text_input('Mời bạn nhập số ràng buộc:')
+    file = open('data/dau_vao.txt', 'w')
+    file.write(soBien+'\n')
+    file.write(soRangBuoc)
+    file.close()
+
+    st.caption("Cách nhập hàm mục tiêu: ")
+    st.caption("- Nhập min hoặc max cho hàm mục tiêu trước.")
+    st.caption("- Nhập hệ số đi kèm với biến xuất hiện trong hàm mục tiêu ( với hệ số dương ta chỉ cần nhập số, còn hệ số âm ta nhập thêm dấu -).")
+    st.caption("Ví dụ cần nhập hàm mục tiêu là min 2x1+3x2-6x3 ta nhập như sau: min 2x1 3x2 -6x3.")
+    hamMucTieu = st.text_input('Mời bạn nhập hàm mục tiêu:')
+    file = open('data/ham_muc_tieu.txt', 'w')
+    file.write(hamMucTieu)
+    file.close()
+
+    st.caption("Cách nhập ràng buộc: ")
+    st.caption("- Nhập hệ số đi kèm với biến xuất hiện trong hàm mục tiêu ( với hệ số dương ta chỉ cần nhập số, còn hệ số âm ta nhập thêm dấu -).")
+    st.caption("- Nhập cách nhau một khoảng trắng rồi nhập dấu của ràng buộc.")
+    st.caption("- Mỗi ràng buộc nhập trên một dòng")
+    st.caption("Ví dụ cần nhập ràng buộc là 2x1+3x2-6x3<=9 ta nhập như sau: 2x1 3x2 -6x3 <= 9.")
+    txt = st.text_area('Mời nhập các ràng buộc:')
+    file = open('data/rang_buoc.txt', 'w')
+    file.write(txt)
+    file.close()
+
+    st.caption("Cách nhập các điều kiện biến: ")
+    st.caption("- Nhập điều kiện của từng biến trên từng dòng")
+    st.caption("- Nếu biến đó tự do thì không cần nhập điều kiện biến")
+    st.caption("Ví dụ cần nhập điều kiện biến là x1>=0 ta nhập như sau: x1>=0")
+    txt1 = st.text_area('Mời nhập các điều kiện biến:')
+    file = open('data/dieu_kien_bien.txt', 'w')
+    file.write(txt1)
+    file.close()
+
+    st.write("Click vào nút dưới đây để thực hiện giải bài toán:")
+    if st.button('Solve'):
+        test = Linear_Programming_Preprocessing(
         "data/dau_vao.txt",
         "data/ham_muc_tieu.txt",
         "data/rang_buoc.txt",
         "data/dieu_kien_bien.txt",
-    )
-    test.preprocessing()
-    c = test.coef_objective_function()
-    A = test.coef_constraints()[0]
-    b = test.coef_constraints()[1]
-    variables = test.get_variables()
-    sign = test.get_objective_function_sign()
+        )
+        test.preprocessing()
+        c = test.coef_objective_function()
+        A = test.coef_constraints()[0]
+        b = test.coef_constraints()[1]
+        variables = test.get_variables()
+        sign = test.get_objective_function_sign()
+        
+        opt_value, opt_solution = mt.dantzig_method(c, A, b, variables, sign)
+        gia_tri_toi_uu = "Giá trị tối ưu là: "+str(opt_value)
+        st.write(gia_tri_toi_uu)
+        st.write("Nghiệm tối ưu:")
+        for key,value in opt_solution.items():
+            nghiem = '- '+key+': '+str(value)
+            st.caption(nghiem)
+    else:
+        st.write('Bài toán chưa được giải')
     
-    opt_value, opt_solution = mt.dantzig_method(c, A, b, variables, sign)
-    print(opt_value)
-    print(opt_solution)
-
-    # for id in c:
-    #     if id < 0:
-    #         DieuKienVoSoNghiem = False
-    # if DieuKienVoSoNghiem:
-    #     print("Bài toán vô số nghiệm")
-    # else:
-    #     opt_value, opt_solution = mt.bland_method(c, A, b)
-    #     # In kết quả
-    #     print("Kết quả:")
-    #     print("z =", opt_value)
-    #     for i, x in enumerate(opt_solution):
-    #         print(f"x{i+1} =", x)
-    # print(test.coef_objective_function())
-    # print(test.coef_constraints()[0])
-    # print(test.coef_constraints()[1])

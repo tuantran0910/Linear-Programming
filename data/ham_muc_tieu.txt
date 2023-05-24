@@ -1,1 +1,1 @@
-max 6x1 8x2 5x3 9x4
+min -x1 4x2
