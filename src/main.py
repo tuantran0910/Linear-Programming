@@ -50,7 +50,9 @@ if __name__ == "__main__":
     file = open('data/dieu_kien_bien.txt', 'w')
     file.write(txt1)
     file.close()
-
+    st.caption(">Nếu biến $x_i$ là biến tự do, kết quả trả về sẽ là hai biến $x_i^+$ và $x_i^-$.Để tìm $x_i$, ta tính toán: $x_i$ = $x_i^+$ - $x_i^-$", unsafe_allow_html = True)
+    st.caption(">Nếu tồn tại biến $x_i \leq 0$, kết quả trả về sẽ là $x_i^*$. Ta tính toán $x_i$ = $-x_i^*$ ", unsafe_allow_html = True)
+    
     st.write("Click vào nút dưới đây để thực hiện giải bài toán:")
     if st.button('Solve'):
         test = Linear_Programming_Preprocessing(

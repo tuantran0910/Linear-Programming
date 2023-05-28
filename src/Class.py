@@ -154,8 +154,10 @@ class Linear_Programming_Preprocessing:
             var_cond_sign = var_cond_component.split()[-2]
             if var_cond_sign == "<=":
                 ltq_var_conds_index.append(idx)
-        
+                
         if len(ltq_var_conds_index) > 0:
+            for i in range(len(ltq_var_conds_index)):
+                self.variables[ltq_var_conds_index[i]] += "*"
             self.coef_obj[ltq_var_conds_index] *= -1
             for i in range(self.num_constraints):
                 self.left_cons[i][ltq_var_conds_index] *= -1
