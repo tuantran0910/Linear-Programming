@@ -17,6 +17,7 @@ if __name__ == "__main__":
     file.close()
 
     st.markdown("<u>Cách nhập hàm mục tiêu:</u>", unsafe_allow_html = True)
+    st.caption("$min / max$ $z = c^Tx$", unsafe_allow_html = True)
     st.caption("- Nhập **'min'** hoặc **'max'** cho hàm mục tiêu trước.")
     st.caption("- Nhập hệ số đi kèm với biến xuất hiện trong hàm mục tiêu ( với hệ số dương ta chỉ cần nhập **số**, còn hệ số âm ta nhập thêm dấu **-**).", unsafe_allow_html=True)
     st.caption("Ví dụ: Nếu muốn nhập hàm mục tiêu là min 2x1 + 3x2 - 6x3 ta nhập như sau: min 2x1 3x2 -6x3.")
@@ -26,6 +27,9 @@ if __name__ == "__main__":
     file.close()
 
     st.markdown("<u>Cách nhập ràng buộc:</u>", unsafe_allow_html = True)
+    st.caption("$a_i x \leq b_i, i \epsilon M_1$", unsafe_allow_html = True)
+    st.caption("$a_i x \geq b_i, i \epsilon M_2$", unsafe_allow_html = True)
+    st.caption("$a_i x = b_i, i \epsilon M_3$", unsafe_allow_html = True)
     st.caption("- Nhập hệ số đi kèm với biến xuất hiện trong hàm mục tiêu ( với hệ số dương ta chỉ cần nhập **số**, còn hệ số âm ta nhập thêm dấu **-**).")
     st.caption("- Nhập các phần tử cách nhau một khoảng trắng rồi nhập dấu của ràng buộc.")
     st.caption("- Mỗi ràng buộc nhập trên một dòng.")
@@ -35,7 +39,10 @@ if __name__ == "__main__":
     file.write(txt)
     file.close()
 
-    st.markdown("<u>Cách nhập các điều kiện biến: </u>", unsafe_allow_html = True)
+    st.markdown("<u>Cách nhập ràng buộc về dấu: </u>", unsafe_allow_html = True)
+    st.caption("$x_j \geq 0, j \epsilon M_1$", unsafe_allow_html = True)
+    st.caption("$x_j \leq 0, j \epsilon M_2$", unsafe_allow_html = True)
+    st.caption("$x_j$ tự do, $j \epsilon M_3$", unsafe_allow_html = True)
     st.caption("- Nhập điều kiện của từng biến trên từng dòng")
     st.caption("- Nếu biến đó tự do thì không cần nhập điều kiện biến")
     st.caption("Ví dụ cần nhập điều kiện biến là x1 >= 0 ta nhập như sau: x1 >= 0")
