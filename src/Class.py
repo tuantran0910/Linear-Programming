@@ -117,7 +117,19 @@ class Linear_Programming_Preprocessing:
         num_variables_cond = self.__get_num_variables_cond(self.var_cond_file_path)
         with open(self.var_cond_file_path, "r") as f:
             var_cond_components = f.readlines()
-            f.close()
+            f.close()    
+        
+        for i in range(len(var_cond_components)):
+            components = var_cond_components[i].split()
+            if components[0][0] == "-":
+                if components[-2] == ">=":
+                    components[0] = components[0].replace("-", "")
+                    components[-2] = "<="
+                elif components[-2] == "<=":
+                    components[0] = components[0].replace("-", "")
+                    components[-2] = ">="
+                var_cond_components[i] = " ".join(components)
+        
         if num_variables_cond < self.num_variables:
             existing_variables = self.__get_existing_variables(var_cond_components)
             missing_variables_index = self.__get_missing_variables_index(existing_variables)
