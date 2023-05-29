@@ -9,8 +9,8 @@ if __name__ == "__main__":
     student = pd.DataFrame({"Họ và Tên": ["Trần Ngọc Tuấn", "Mai Chiến Vĩ Thiên"], "MSSV": ["21280058", "21280049"], "Lớp": ["21KDL1", "21KDL1"]})
     student.index = [1, 2]
     st.table(student)
-    soBien = st.text_input('Mời bạn nhập số biến:')
-    soRangBuoc = st.text_input('Mời bạn nhập số ràng buộc:')
+    soBien = st.text_input('Mời bạn nhập số biến:', placeholder = "2")
+    soRangBuoc = st.text_input('Mời bạn nhập số ràng buộc:', placeholder = "3")
     file = open('data/dau_vao.txt', 'w')
     file.write(soBien+'\n')
     file.write(soRangBuoc)
@@ -21,7 +21,7 @@ if __name__ == "__main__":
     st.caption("- Nhập **'min'** hoặc **'max'** cho hàm mục tiêu trước.")
     st.caption("- Nhập hệ số đi kèm với biến xuất hiện trong hàm mục tiêu ( với hệ số dương ta chỉ cần nhập **số nguyên**, còn hệ số âm ta nhập thêm dấu **-**).", unsafe_allow_html=True)
     st.caption("Ví dụ: Nếu muốn nhập hàm mục tiêu là min 2x1 + 3x2 - 6x3 ta nhập như sau: min 2x1 3x2 -6x3.")
-    hamMucTieu = st.text_input('Mời bạn nhập hàm mục tiêu: ')
+    hamMucTieu = st.text_input('Mời bạn nhập hàm mục tiêu: ', placeholder = "min 2x1 3x2 -6x3")
     file = open('data/ham_muc_tieu.txt', 'w')
     file.write(hamMucTieu)
     file.close()
@@ -34,7 +34,9 @@ if __name__ == "__main__":
     st.caption("- Nhập các phần tử cách nhau một khoảng trắng rồi nhập dấu của ràng buộc.")
     st.caption("- Mỗi ràng buộc nhập trên một dòng.")
     st.caption("Ví dụ cần nhập ràng buộc là 2x1 + 3x2 - 6x3 <= 9 ta nhập như sau: 2x1 3x2 -6x3 <= 9.")
-    txt = st.text_area('Mời nhập các ràng buộc:')
+    txt = st.text_area('Mời nhập các ràng buộc:', placeholder = """2x1 3x2 -6x3 <= 9
+3x1 -4x2 x3 <= 5
+x1 x2 x3 >= -2""")
     file = open('data/rang_buoc.txt', 'w')
     file.write(txt)
     file.close()
@@ -43,17 +45,18 @@ if __name__ == "__main__":
     st.caption("$x_j \geq 0, j \epsilon M_1$", unsafe_allow_html = True)
     st.caption("$x_j \leq 0, j \epsilon M_2$", unsafe_allow_html = True)
     st.caption("$x_j$ tự do, $j \epsilon M_3$", unsafe_allow_html = True)
-    st.caption("- Nhập điều kiện của từng biến trên từng dòng")
-    st.caption("- Nếu biến đó tự do thì không cần nhập điều kiện biến")
-    st.caption("Ví dụ cần nhập điều kiện biến là x1 >= 0 ta nhập như sau: x1 >= 0")
-    txt1 = st.text_area('Mời nhập các điều kiện biến:')
+    st.caption("- Nhập điều kiện của từng biến trên từng dòng.")
+    st.caption("- Nếu biến đó tự do thì không cần nhập điều kiện biến.")
+    st.caption("Ví dụ cần nhập điều kiện biến là x1 >= 0 ta nhập như sau: x1 >= 0.")
+    txt1 = st.text_area('Mời nhập các điều kiện biến:', placeholder = """x1 >= 0
+x2 <= 0""")
     file = open('data/dieu_kien_bien.txt', 'w')
     file.write(txt1)
     file.close()
-    st.caption(">Nếu biến $x_i$ là biến tự do, kết quả trả về sẽ là hai biến $x_i^+$ và $x_i^-$.Để tìm $x_i$, ta tính toán: $x_i$ = $x_i^+$ - $x_i^-$", unsafe_allow_html = True)
-    st.caption(">Nếu tồn tại biến $x_i \leq 0$, kết quả trả về sẽ là $x_i^*$. Ta tính toán $x_i$ = $-x_i^*$ ", unsafe_allow_html = True)
+    # st.caption(">Nếu biến $x_i$ là biến tự do, kết quả trả về sẽ là hai biến $x_i^+$ và $x_i^-$. Để tìm $x_i$, ta tính toán: $x_i$ = $x_i^+$ - $x_i^-$", unsafe_allow_html = True)
+    # st.caption(">Nếu tồn tại biến $x_i \leq 0$, kết quả trả về sẽ là $x_i^*$. Ta tính toán $x_i$ = $-x_i^*$ ", unsafe_allow_html = True)
     
-    st.write("Click vào nút dưới đây để thực hiện giải bài toán:")
+    st.write("<u>Click vào nút dưới đây để thực hiện giải bài toán:</u>", unsafe_allow_html = True)
     if st.button('Solve'):
         test = Linear_Programming_Preprocessing(
         "data/dau_vao.txt",
