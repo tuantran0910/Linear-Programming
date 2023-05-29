@@ -9,7 +9,7 @@ if __name__ == "__main__":
     student = pd.DataFrame({"Họ và Tên": ["Trần Ngọc Tuấn", "Mai Chiến Vĩ Thiên"], "MSSV": ["21280058", "21280049"], "Lớp": ["21KDL1", "21KDL1"]})
     student.index = [1, 2]
     st.table(student)
-    soBien = st.text_input('Mời bạn nhập số biến:', placeholder = "2")
+    soBien = st.text_input('Mời bạn nhập số biến:', placeholder = "3")
     soRangBuoc = st.text_input('Mời bạn nhập số ràng buộc:', placeholder = "3")
     file = open('data/dau_vao.txt', 'w')
     file.write(soBien+'\n')
@@ -20,8 +20,8 @@ if __name__ == "__main__":
     st.caption("$min / max$ $z = c^Tx$", unsafe_allow_html = True)
     st.caption("- Nhập **'min'** hoặc **'max'** cho hàm mục tiêu trước.")
     st.caption("- Nhập hệ số đi kèm với biến xuất hiện trong hàm mục tiêu ( với hệ số dương ta chỉ cần nhập **số nguyên**, còn hệ số âm ta nhập thêm dấu **-**).", unsafe_allow_html=True)
-    st.caption("Ví dụ: Nếu muốn nhập hàm mục tiêu là min 2x1 + 3x2 - 6x3 ta nhập như sau: min 2x1 3x2 -6x3.")
-    hamMucTieu = st.text_input('Mời bạn nhập hàm mục tiêu: ', placeholder = "min 2x1 3x2 -6x3")
+    st.caption("Ví dụ: Nếu muốn nhập hàm mục tiêu là min x1 + 3x2 + 2x3 ta nhập như sau: min x1 3x2 2x3.")
+    hamMucTieu = st.text_input('Mời bạn nhập hàm mục tiêu: ', placeholder = "min x1 3x2 2x3")
     file = open('data/ham_muc_tieu.txt', 'w')
     file.write(hamMucTieu)
     file.close()
@@ -33,10 +33,10 @@ if __name__ == "__main__":
     st.caption("- Nhập hệ số đi kèm với biến xuất hiện trong hàm mục tiêu ( với hệ số dương ta chỉ cần nhập **số nguyên**, còn hệ số âm ta nhập thêm dấu **-**).")
     st.caption("- Nhập các phần tử cách nhau một khoảng trắng rồi nhập dấu của ràng buộc.")
     st.caption("- Mỗi ràng buộc nhập trên một dòng.")
-    st.caption("Ví dụ cần nhập ràng buộc là 2x1 + 3x2 - 6x3 <= 9 ta nhập như sau: 2x1 3x2 -6x3 <= 9.")
-    txt = st.text_area('Mời nhập các ràng buộc:', placeholder = """2x1 3x2 -6x3 <= 9
-3x1 -4x2 x3 <= 5
-x1 x2 x3 >= -2""")
+    st.caption("Ví dụ cần nhập ràng buộc là 7x1 + 5x2 + 3x3 <= 20 ta nhập như sau: 7x1 5x2 3x3 <= 20.")
+    txt = st.text_area('Mời nhập các ràng buộc:', placeholder = """x1 x2 x3 = 1
+7x1 5x2 3x3 <= 20
+x1 5x2 4x3 <= 30""")
     file = open('data/rang_buoc.txt', 'w')
     file.write(txt)
     file.close()
@@ -49,7 +49,8 @@ x1 x2 x3 >= -2""")
     st.caption("- Nếu biến đó tự do thì không cần nhập ràng buộc về dấu.")
     st.caption("Ví dụ cần nhập ràng buộc dấu là x1 >= 0 ta nhập như sau: x1 >= 0.")
     txt1 = st.text_area('Mời nhập các ràng buộc về dấu:', placeholder = """x1 >= 0
-x2 <= 0""")
+x2 >= 0
+x3 >= 0""")
     file = open('data/dieu_kien_bien.txt', 'w')
     file.write(txt1)
     file.close()
@@ -85,8 +86,10 @@ x2 <= 0""")
         
         if opt_solution == None:
             opt_solution = "Không tồn tại nghiệm tối ưu"
+            st.write("Nghiệm tối ưu: "+ opt_solution)
         else:
             st.write("Nghiệm tối ưu:")
+            opt_solution = dict(sorted(opt_solution.items()))
             for key, value in opt_solution.items():
                 nghiem = '- ' + key + ': ' + str(value)
                 st.caption(nghiem)

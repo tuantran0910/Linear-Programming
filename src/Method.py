@@ -111,6 +111,7 @@ def dantzig_method(c, A, b, variables, objective_sign):
             key_new = key[:-1]
             opt_solution[key_new] = -value
         elif (isinstance(value, str)):
+            value = value.replace("1.0x", "x")
             if key[-1] == "+":
                 value_components = value.split()
                 count = 0
@@ -119,6 +120,8 @@ def dantzig_method(c, A, b, variables, objective_sign):
                         count += 1
                 if count == 0:
                     opt_solution[key[:-1]] = float(value_components[0])
+                else:
+                    opt_solution[key] = value
             elif key[-1] == "-":
                 value_components = value.split()
                 count = 0
@@ -127,6 +130,8 @@ def dantzig_method(c, A, b, variables, objective_sign):
                         count += 1
                 if count == 0:
                     opt_solution[key[:-1]] = -float(value_components[0])
+                else:
+                    opt_solution[key] = value
             else:
                 opt_solution[key] = value
     return opt_value, opt_solution
@@ -245,6 +250,7 @@ def bland_method(c, A, b, variables, objective_sign):
             key_new = key[:-1]
             opt_solution[key_new] = -value
         elif (isinstance(value, str)):
+            value = value.replace("1.0x", "x")
             if key[-1] == "+":
                 value_components = value.split()
                 count = 0
@@ -253,6 +259,8 @@ def bland_method(c, A, b, variables, objective_sign):
                         count += 1
                 if count == 0:
                     opt_solution[key[:-1]] = float(value_components[0])
+                else:
+                    opt_solution[key] = value
             elif key[-1] == "-":
                 value_components = value.split()
                 count = 0
@@ -261,6 +269,8 @@ def bland_method(c, A, b, variables, objective_sign):
                         count += 1
                 if count == 0:
                     opt_solution[key[:-1]] = -float(value_components[0])
+                else:
+                    opt_solution[key] = value
             else:
                 opt_solution[key] = value
     return opt_value, opt_solution
@@ -476,7 +486,6 @@ def two_phase_method(c, A, b, variables, objective_sign):
                     else:
                         if result_tableau[i, l] != 0.:
                             final_solution[basis[i - 1]] += " {}{}".format(np.round(result_tableau[i, l], 2), non_basis[l - 1])
-    
     opt_solution = dict()
     for key, value in final_solution.items():
         if (isinstance(value, float) or isinstance(value, int)) and "*" not in key:
@@ -485,6 +494,7 @@ def two_phase_method(c, A, b, variables, objective_sign):
             key_new = key[:-1]
             opt_solution[key_new] = -value
         elif (isinstance(value, str)):
+            value = value.replace("1.0x", "x")
             if key[-1] == "+":
                 value_components = value.split()
                 count = 0
@@ -493,6 +503,8 @@ def two_phase_method(c, A, b, variables, objective_sign):
                         count += 1
                 if count == 0:
                     opt_solution[key[:-1]] = float(value_components[0])
+                else:
+                    opt_solution[key] = value
             elif key[-1] == "-":
                 value_components = value.split()
                 count = 0
@@ -501,6 +513,8 @@ def two_phase_method(c, A, b, variables, objective_sign):
                         count += 1
                 if count == 0:
                     opt_solution[key[:-1]] = -float(value_components[0])
+                else:
+                    opt_solution[key] = value
             else:
                 opt_solution[key] = value
     return opt_value, opt_solution
