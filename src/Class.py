@@ -56,11 +56,11 @@ class Linear_Programming_Preprocessing:
             for component in object_components:
                 coef_string = component.split("x")[0]
                 if len(coef_string) == 0:
-                    coef = int(coef_string.replace("", "1"))
+                    coef = float(coef_string.replace("", "1"))
                 elif len(coef_string) == 1:
-                    coef = int(coef_string.replace("-", "-1"))
+                    coef = float(coef_string.replace("-", "-1"))
                 else:
-                    coef = int(coef_string)
+                    coef = float(coef_string)
                 self.coef_obj.append(coef)
 
             if len(missing_variables_index) > 0:
@@ -75,22 +75,22 @@ class Linear_Programming_Preprocessing:
     def constraints(self):
         with open(self.cons_file_path, "r") as f:
             constraint_string = f.readlines()
-            self.left_cons = np.zeros((self.num_constraints, self.num_variables), dtype=int)
-            self.right_cons = np.zeros((self.num_constraints, 1))
+            self.left_cons = np.zeros((self.num_constraints, self.num_variables), dtype = float)
+            self.right_cons = np.zeros((self.num_constraints, 1), dtype = float)
             constraints_components = [i.split() for i in constraint_string]
             for i in range(self.num_constraints):
                 component_string = constraints_components[i]
                 sign = component_string[-2]        
-                self.right_cons[i] = int(component_string[-1])
+                self.right_cons[i] = float(component_string[-1])
                 row_left_cons = []
                 for component in component_string[:-2]:
                     coef_string = component.split("x")[0]
                     if len(coef_string) == 0:
-                        coef = int(coef_string.replace("", "1"))
+                        coef = float(coef_string.replace("", "1"))
                     elif len(coef_string) == 1:
-                        coef = int(coef_string.replace("-", "-1"))
+                        coef = float(coef_string.replace("-", "-1"))
                     else:
-                        coef = int(coef_string)
+                        coef = float(coef_string)
                     row_left_cons.append(coef)
                 
                 exist_variables = self.__get_existing_variables(component_string[:-2])
@@ -104,7 +104,7 @@ class Linear_Programming_Preprocessing:
                     self.right_cons[i] = -1 * self.right_cons[i]
                 elif sign == "=":
                     self.left_cons = np.vstack((self.left_cons, -1 * self.left_cons[i]))
-                    self.right_cons = np.vstack((self.right_cons, [-int(component_string[-1])]))
+                    self.right_cons = np.vstack((self.right_cons, [-float(component_string[-1])]))
                     self.num_constraints += 1
             # self.right_cons = np.asarray(self.right_cons)
             f.close()
@@ -133,7 +133,7 @@ class Linear_Programming_Preprocessing:
         if num_variables_cond < self.num_variables:
             existing_variables = self.__get_existing_variables(var_cond_components)
             missing_variables_index = self.__get_missing_variables_index(existing_variables)
-            add_left_cons = np.zeros((self.num_constraints, len(missing_variables_index)), dtype = int)
+            add_left_cons = np.zeros((self.num_constraints, len(missing_variables_index)), dtype = float)
             add_variables = []
             for i in range(len(missing_variables_index)):
                 add_variables.append("x{}-".format(missing_variables_index[i] + 1))

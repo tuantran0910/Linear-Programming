@@ -153,16 +153,26 @@ def bland_method(c, A, b, variables, objective_sign):
     # Bien co so va khong co so ban dau
     basis = ["w{}".format(i + 1) for i in range(m)]
     non_basis = variables.copy()
-    
+
     while True:
         # Tim kiem bien vao
-        negative_non_basis = [[variables[i - 1], i] for i in range(1, n + 1) if tableau[0, i] < 0]
+        negative_non_basis = [[non_basis[i - 1], i] for i in range(1, n + 1) if tableau[0, i] < 0]
         # Check dieu kien dung
         if len(negative_non_basis) == 0:
             break
-        col_idx = sorted(negative_non_basis, key = lambda j: j[0])[0][1]
+        x_list = []
+        w_list = []
+        for item in negative_non_basis:
+            if 'x' in item[0]:
+                x_list.append(item)
+            elif 'w' in item[0]:
+                w_list.append(item)
+        x_list.sort(key = lambda j: j[0])
+        w_list.sort(key = lambda j: j[0])
+        negative_non_basis = x_list + w_list
+        col_idx = negative_non_basis[0][1]
+        # col_idx = sorted(negative_non_basis, key = lambda j: j[0])[0][1]
         var_in = non_basis[col_idx - 1]
-        
         # Tim kiem bien ra
         row_idx = -1
         min_ratio = float('inf')
