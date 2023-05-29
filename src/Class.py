@@ -76,12 +76,12 @@ class Linear_Programming_Preprocessing:
         with open(self.cons_file_path, "r") as f:
             constraint_string = f.readlines()
             self.left_cons = np.zeros((self.num_constraints, self.num_variables), dtype=int)
-            self.right_cons = []
+            self.right_cons = np.zeros((self.num_constraints, 1))
             constraints_components = [i.split() for i in constraint_string]
             for i in range(self.num_constraints):
                 component_string = constraints_components[i]
                 sign = component_string[-2]        
-                self.right_cons.append(int(component_string[-1]))
+                self.right_cons[i] = int(component_string[-1])
                 row_left_cons = []
                 for component in component_string[:-2]:
                     coef_string = component.split("x")[0]
@@ -104,9 +104,9 @@ class Linear_Programming_Preprocessing:
                     self.right_cons[i] = -1 * self.right_cons[i]
                 elif sign == "=":
                     self.left_cons = np.vstack((self.left_cons, -1 * self.left_cons[i]))
-                    self.right_cons.append(-int(component_string[-1]))
+                    self.right_cons = np.vstack((self.right_cons, [-int(component_string[-1])]))
                     self.num_constraints += 1
-            self.right_cons = np.asarray(self.right_cons)
+            # self.right_cons = np.asarray(self.right_cons)
             f.close()
 
     def preprocessing(self):

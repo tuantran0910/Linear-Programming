@@ -19,7 +19,7 @@ if __name__ == "__main__":
     st.markdown("<u>Cách nhập hàm mục tiêu:</u>", unsafe_allow_html = True)
     st.caption("$min / max$ $z = c^Tx$", unsafe_allow_html = True)
     st.caption("- Nhập **'min'** hoặc **'max'** cho hàm mục tiêu trước.")
-    st.caption("- Nhập hệ số đi kèm với biến xuất hiện trong hàm mục tiêu ( với hệ số dương ta chỉ cần nhập **số**, còn hệ số âm ta nhập thêm dấu **-**).", unsafe_allow_html=True)
+    st.caption("- Nhập hệ số đi kèm với biến xuất hiện trong hàm mục tiêu ( với hệ số dương ta chỉ cần nhập **số nguyên**, còn hệ số âm ta nhập thêm dấu **-**).", unsafe_allow_html=True)
     st.caption("Ví dụ: Nếu muốn nhập hàm mục tiêu là min 2x1 + 3x2 - 6x3 ta nhập như sau: min 2x1 3x2 -6x3.")
     hamMucTieu = st.text_input('Mời bạn nhập hàm mục tiêu: ')
     file = open('data/ham_muc_tieu.txt', 'w')
@@ -30,7 +30,7 @@ if __name__ == "__main__":
     st.caption("$a_i x \leq b_i, i \epsilon M_1$", unsafe_allow_html = True)
     st.caption("$a_i x \geq b_i, i \epsilon M_2$", unsafe_allow_html = True)
     st.caption("$a_i x = b_i, i \epsilon M_3$", unsafe_allow_html = True)
-    st.caption("- Nhập hệ số đi kèm với biến xuất hiện trong hàm mục tiêu ( với hệ số dương ta chỉ cần nhập **số**, còn hệ số âm ta nhập thêm dấu **-**).")
+    st.caption("- Nhập hệ số đi kèm với biến xuất hiện trong hàm mục tiêu ( với hệ số dương ta chỉ cần nhập **số nguyên**, còn hệ số âm ta nhập thêm dấu **-**).")
     st.caption("- Nhập các phần tử cách nhau một khoảng trắng rồi nhập dấu của ràng buộc.")
     st.caption("- Mỗi ràng buộc nhập trên một dòng.")
     st.caption("Ví dụ cần nhập ràng buộc là 2x1 + 3x2 - 6x3 <= 9 ta nhập như sau: 2x1 3x2 -6x3 <= 9.")
@@ -67,7 +67,6 @@ if __name__ == "__main__":
         b = test.coef_constraints()[1]
         variables = test.get_variables()
         sign = test.get_objective_function_sign()
-        
         if min(b) < 0:
             opt_value, opt_solution = mt.two_phase_method(c, A, b, variables, sign)
         elif min(b) == 0:
@@ -75,12 +74,19 @@ if __name__ == "__main__":
         else:
             opt_value, opt_solution = mt.dantzig_method(c, A, b, variables, sign)
         
-        gia_tri_toi_uu = "Giá trị tối ưu là: " + str(opt_value)
+        if opt_value == None:
+            gia_tri_toi_uu = "Giá trị tối ưu là: Không tồn tại giá trị tối ưu"
+        else:
+            gia_tri_toi_uu = "Giá trị tối ưu là: " + str(opt_value)
+        
+        if opt_solution == None:
+            opt_solution = "Không tồn tại nghiệm tối ưu"
         st.write(gia_tri_toi_uu)
         st.write("Nghiệm tối ưu:")
-        for key,value in opt_solution.items():
-            nghiem = '- ' + key + ': ' + str(value)
-            st.caption(nghiem)
+        st.write(opt_solution)
+        # for key,value in opt_solution.items():
+        #     nghiem = '- ' + key + ': ' + str(value)
+        #     st.caption(nghiem)
     else:
         st.write('Bài toán chưa được giải')
     

@@ -231,7 +231,6 @@ def two_phase_method(c, A, b, variables, objective_sign):
         for j in range(1, n + 1):
             tableau[i, j] = -A[i - 1, j - 1]
         tableau[i][-1] = 1
-        
     # Bien co so va khong co so ban dau
     basis = ["w{}".format(i + 1) for i in range(m)]
     non_basis = variables.copy() + ["x0"]
@@ -298,7 +297,6 @@ def two_phase_method(c, A, b, variables, objective_sign):
         if row_idx == -1:
             raise Exception("Bài toán vô nghiệm.")
         var_out = basis[row_idx - 1]
-        
         # Cập nhật bảng Simplex
         pivot = tableau[row_idx, col_idx]
         add_right = np.zeros(m + 1)
