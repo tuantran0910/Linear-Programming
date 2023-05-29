@@ -104,7 +104,32 @@ def dantzig_method(c, A, b, variables, objective_sign):
                     else:
                         if result_tableau[i, l] != 0:
                             final_solution[basis[i - 1]] += " {}{}".format(np.round(result_tableau[i, l], 2), non_basis[l - 1])
-    opt_solution = final_solution
+    opt_solution = dict()
+    for key, value in final_solution.items():
+        if (isinstance(value, float) or isinstance(value, int)) and "*" not in key:
+            opt_solution[key] = value
+        elif (isinstance(value, float) or isinstance(value, int)) and "*" in key:
+            key_new = key[:-1]
+            opt_solution[key_new] = -value
+        elif (isinstance(value, str)):
+            if key[-1] == "+":
+                value_components = value.split()
+                count = 0
+                for components in value_components[1:]:
+                    if (key[:-1] + "-") not in components:
+                        count += 1
+                if count == 0:
+                    opt_solution[key[:-1]] = float(value_components[0])
+            elif key[-1] == "-":
+                value_components = value.split()
+                count = 0
+                for components in value_components[1:]:
+                    if components != (key[:-1] + "+"):
+                        count += 1
+                if count == 0:
+                    opt_solution[key[-1]] = float(value_components[0])
+            else:
+                opt_solution[key] = value
     return opt_value, opt_solution
 
 # Hàm Bland (Simplex)
@@ -127,7 +152,6 @@ def bland_method(c, A, b, variables, objective_sign):
     
     while True:
         # Tim kiem bien vao
-        print(tableau)
         negative_non_basis = [[variables[i - 1], i] for i in range(1, n + 1) if tableau[0, i] < 0]
         # Check dieu kien dung
         if len(negative_non_basis) == 0:
@@ -214,7 +238,32 @@ def bland_method(c, A, b, variables, objective_sign):
                     else:
                         if result_tableau[i, l] != 0:
                             final_solution[basis[i - 1]] += " {}{}".format(result_tableau[i, l], non_basis[l - 1])
-    opt_solution = final_solution
+    opt_solution = dict()
+    for key, value in final_solution.items():
+        if (isinstance(value, float) or isinstance(value, int)) and "*" not in key:
+            opt_solution[key] = value
+        elif (isinstance(value, float) or isinstance(value, int)) and "*" in key:
+            key_new = key[:-1]
+            opt_solution[key_new] = -value
+        elif (isinstance(value, str)):
+            if key[-1] == "+":
+                value_components = value.split()
+                count = 0
+                for components in value_components[1:]:
+                    if (key[:-1] + "-") not in components:
+                        count += 1
+                if count == 0:
+                    opt_solution[key[:-1]] = float(value_components[0])
+            elif key[-1] == "-":
+                value_components = value.split()
+                count = 0
+                for components in value_components[1:]:
+                    if components != (key[:-1] + "+"):
+                        count += 1
+                if count == 0:
+                    opt_solution[key[-1]] = float(value_components[0])
+            else:
+                opt_solution[key] = value
     return opt_value, opt_solution
 
 def two_phase_method(c, A, b, variables, objective_sign):
@@ -234,7 +283,7 @@ def two_phase_method(c, A, b, variables, objective_sign):
     # Bien co so va khong co so ban dau
     basis = ["w{}".format(i + 1) for i in range(m)]
     non_basis = variables.copy() + ["x0"]
-
+    
     # Xoay lan thu nhat, tim kiem bien vao
     col_idx = n + 1
     var_in = non_basis[col_idx - 1]
@@ -267,6 +316,7 @@ def two_phase_method(c, A, b, variables, objective_sign):
     non_basis.remove(var_in)
     non_basis.append(var_out)
     basis[row_idx - 1] = var_in
+    
     while True:
         # Check x0 co nam o cac bien khong co so
         if "x0" in non_basis:
@@ -292,10 +342,13 @@ def two_phase_method(c, A, b, variables, objective_sign):
                 if ratio < min_ratio:
                     row_idx = i
                     min_ratio = ratio
+                elif ratio == min_ratio and basis[i - 1] == "x0":
+                    row_idx = i
+                    min_ratio = ratio
 
         # Check vo nghiem
-        if row_idx == -1:
-            raise Exception("Bài toán vô nghiệm.")
+        # if row_idx == -1:
+        #     raise Exception("Bài toán vô nghiệm.")
         var_out = basis[row_idx - 1]
         # Cập nhật bảng Simplex
         pivot = tableau[row_idx, col_idx]
@@ -324,7 +377,6 @@ def two_phase_method(c, A, b, variables, objective_sign):
     if not all(x == 0 for x in tableau[0, :-1]):
         print("Bài toán vô nghiệm.")
         return None, None
-
     # Xay dung ham muc tieu pha 2
     new_obj_func = np.zeros(n + 2)
     for var in basis:
@@ -339,7 +391,6 @@ def two_phase_method(c, A, b, variables, objective_sign):
     tableau = np.delete(tableau, -1, axis = 1)
     tableau[0] = new_obj_func
     non_basis = non_basis[:-1]
-    
     while True:
         # Tim kiem bien vao
         col_idx = np.argmin(tableau[0, 1:]) + 1
@@ -404,10 +455,9 @@ def two_phase_method(c, A, b, variables, objective_sign):
         if tableau[0, i] != 0:
             variables_appeard_final_non_basics.append((i, non_basis[i - 1]))
     
-    result_tableau = tableau
+    result_tableau = tableau.copy().round(2)
     result_tableau[:, [variable_appeard_final_non_basics[0] for variable_appeard_final_non_basics in variables_appeard_final_non_basics]] = 0
-
-    final_solution = dict()        
+    final_solution = dict()
     if len(variables_appeard_final_non_basics) == len(variables):
         for variable in variables_appeard_final_non_basics:
             if variable[1] in variables:
@@ -425,7 +475,33 @@ def two_phase_method(c, A, b, variables, objective_sign):
                     if l == 0:
                         final_solution[basis[i - 1]] = str(np.round(result_tableau[i, l], 2))
                     else:
-                        if result_tableau[i, l] != 0:
+                        if result_tableau[i, l] != 0.:
                             final_solution[basis[i - 1]] += " {}{}".format(np.round(result_tableau[i, l], 2), non_basis[l - 1])
-    opt_solution = final_solution
+    
+    opt_solution = dict()
+    for key, value in final_solution.items():
+        if (isinstance(value, float) or isinstance(value, int)) and "*" not in key:
+            opt_solution[key] = value
+        elif (isinstance(value, float) or isinstance(value, int)) and "*" in key:
+            key_new = key[:-1]
+            opt_solution[key_new] = -value
+        elif (isinstance(value, str)):
+            if key[-1] == "+":
+                value_components = value.split()
+                count = 0
+                for components in value_components[1:]:
+                    if (key[:-1] + "-") not in components:
+                        count += 1
+                if count == 0:
+                    opt_solution[key[:-1]] = float(value_components[0])
+            elif key[-1] == "-":
+                value_components = value.split()
+                count = 0
+                for components in value_components[1:]:
+                    if components != (key[:-1] + "+"):
+                        count += 1
+                if count == 0:
+                    opt_solution[key[-1]] = float(value_components[0])
+            else:
+                opt_solution[key] = value
     return opt_value, opt_solution

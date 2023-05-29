@@ -75,18 +75,18 @@ if __name__ == "__main__":
             opt_value, opt_solution = mt.dantzig_method(c, A, b, variables, sign)
         
         if opt_value == None:
-            gia_tri_toi_uu = "Giá trị tối ưu là: Không tồn tại giá trị tối ưu"
+            gia_tri_toi_uu = "Giá trị tối ưu: Không tồn tại giá trị tối ưu"
         else:
-            gia_tri_toi_uu = "Giá trị tối ưu là: " + str(opt_value)
+            gia_tri_toi_uu = "Giá trị tối ưu: " + str(opt_value)
+        st.write(gia_tri_toi_uu)
         
         if opt_solution == None:
             opt_solution = "Không tồn tại nghiệm tối ưu"
-        st.write(gia_tri_toi_uu)
-        st.write("Nghiệm tối ưu:")
-        st.write(opt_solution)
-        # for key,value in opt_solution.items():
-        #     nghiem = '- ' + key + ': ' + str(value)
-        #     st.caption(nghiem)
+        else:
+            st.write("Nghiệm tối ưu:")
+            for key, value in opt_solution.items():
+                nghiem = '- ' + key + ': ' + str(value)
+                st.caption(nghiem)
     else:
         st.write('Bài toán chưa được giải')
     
