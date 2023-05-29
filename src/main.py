@@ -33,9 +33,9 @@ if __name__ == "__main__":
     st.caption("- Nhập hệ số đi kèm với biến xuất hiện trong hàm mục tiêu ( với hệ số dương ta chỉ cần nhập **số nguyên**, còn hệ số âm ta nhập thêm dấu **-**).")
     st.caption("- Nhập các phần tử cách nhau một khoảng trắng rồi nhập dấu của ràng buộc.")
     st.caption("- Mỗi ràng buộc nhập trên một dòng.")
-    st.caption("Ví dụ cần nhập ràng buộc là 7x1 + 5x2 + 3x3 <= 20 ta nhập như sau: 7x1 5x2 3x3 <= 20.")
+    st.caption("Ví dụ cần nhập ràng buộc là 7x1 + 2x2 + 3x3 <= 20 ta nhập như sau: 7x1 2x2 3x3 <= 20.")
     txt = st.text_area('Mời nhập các ràng buộc:', placeholder = """x1 x2 x3 = 1
-7x1 5x2 3x3 <= 20
+7x1 2x2 3x3 <= 20
 x1 5x2 4x3 <= 30""")
     file = open('data/rang_buoc.txt', 'w')
     file.write(txt)
