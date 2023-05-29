@@ -16,7 +16,6 @@ def dantzig_method(c, A, b, variables, objective_sign):
     # Bien co so va khong co so ban dau
     basis = ["w{}".format(i + 1) for i in range(m)]
     non_basis = variables.copy()
-    
     while True:
         # Tim kiem bien vao
         col_idx = np.argmin(tableau[0, 1:]) + 1
@@ -124,10 +123,10 @@ def dantzig_method(c, A, b, variables, objective_sign):
                 value_components = value.split()
                 count = 0
                 for components in value_components[1:]:
-                    if components != (key[:-1] + "+"):
+                    if (key[:-1] + "+") not in components:
                         count += 1
                 if count == 0:
-                    opt_solution[key[-1]] = float(value_components[0])
+                    opt_solution[key[:-1]] = -float(value_components[0])
             else:
                 opt_solution[key] = value
     return opt_value, opt_solution
@@ -258,10 +257,10 @@ def bland_method(c, A, b, variables, objective_sign):
                 value_components = value.split()
                 count = 0
                 for components in value_components[1:]:
-                    if components != (key[:-1] + "+"):
+                    if (key[:-1] + "+") not in components:
                         count += 1
                 if count == 0:
-                    opt_solution[key[-1]] = float(value_components[0])
+                    opt_solution[key[:-1]] = -float(value_components[0])
             else:
                 opt_solution[key] = value
     return opt_value, opt_solution
@@ -498,10 +497,10 @@ def two_phase_method(c, A, b, variables, objective_sign):
                 value_components = value.split()
                 count = 0
                 for components in value_components[1:]:
-                    if components != (key[:-1] + "+"):
+                    if (key[:-1] + "+") not in components:
                         count += 1
                 if count == 0:
-                    opt_solution[key[-1]] = float(value_components[0])
+                    opt_solution[key[:-1]] = -float(value_components[0])
             else:
                 opt_solution[key] = value
     return opt_value, opt_solution
