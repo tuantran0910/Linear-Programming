@@ -20,7 +20,7 @@ cd Linear-Programming
 To install the necessary libraries, you can use the following command:
 
 ```bash
-pip install -r ~/requirements.txt
+pip install -r requirements.txt
 ```
 
 This project use the library ```streamlit``` for user interface. To provide the input data for your project, please follow the instructions provided at [How to provide input data](#how-to-provide-input-data)
