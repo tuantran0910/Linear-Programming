@@ -16,7 +16,7 @@ To install the necessary libraries, you can use the following command:
 pip install -r ~/requirements.txt
 ```
 
-This project use the library ```streamlit``` for user interface. To provide the input data for your project, please follow the instructions provided at [How to provide input data]
+This project use the library ```streamlit``` for user interface. To provide the input data for your project, please follow the instructions provided at [How to provide input data](#how-to-provide-input-data)
 
 To start the project:
 
