@@ -10,6 +10,13 @@ This practical final project is part of the Linear Programming course in the fie
 
 To install the correct version of Python (version 3.8 or higher) for this project, you can visit the following [link](https://www.python.org/downloads/release/python-380/) to download and install.
 
+Clone the project to your local machine:
+
+```bash
+git clone https://github.com/TuanTran0910/Linear-Programming.git
+cd Linear-Programming
+```
+
 To install the necessary libraries, you can use the following command:
 
 ```bash
@@ -21,7 +28,7 @@ This project use the library ```streamlit``` for user interface. To provide the 
 To start the project:
 
 ```bash
-python -m streamlit run ~/src/main.py
+python -m streamlit run src/main.py
 ```
 
 ### How to provide input data
