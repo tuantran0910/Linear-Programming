@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This practical final project is part of the Linear Programming course in the field of Data Science at VNUHCM - University of Science.
+> This practical final project is part of the Linear Programming course in the field of Data Science at VNUHCM - University of Science.
 
 ## Usage
 
